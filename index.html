@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python in 4 Weeks — Learn Python from Scratch</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green:       #16a34a;
+    --green-dark:  #14532d;
+    --green-mid:   #22c55e;
+    --green-light: #dcfce7;
+    --green-faint: #f0fdf4;
+    --navy:        #0f172a;
+    --slate:       #334155;
+    --muted:       #64748b;
+    --border:      #e2e8f0;
+    --code-bg:     #0f172a;
+    --white:       #ffffff;
+    --off-white:   #f8fafc;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--slate);
+    background: var(--white);
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-brand {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--green-mid);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 13px;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--green);
+    color: var(--white) !important;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px !important;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .nav-cta:hover { background: var(--green-dark) !important; color: var(--white) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: var(--white);
+    padding: 80px 2rem 72px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: var(--green-mid);
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1.5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .hero-dot { width: 6px; height: 6px; background: var(--green-mid); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--green-mid); }
+  .hero-sub {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: #94a3b8;
+    max-width: 560px;
+    margin: 16px auto 40px;
+    line-height: 1.6;
+  }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green);
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid #334155;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .btn-secondary:hover { border-color: #64748b; transform: translateY(-1px); }
+
+  .hero-code {
+    max-width: 520px;
+    margin: 52px auto 0;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: left;
+    border: 1px solid #1e293b;
+  }
+  .code-bar {
+    background: #0f172a;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .code-title { font-size: 11px; color: #475569; margin-left: 8px; font-family: 'Courier New', monospace; }
+  .code-body { padding: 20px 24px; }
+  .code-body pre {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #e2e8f0;
+    white-space: pre;
+  }
+  .ck { color: #c084fc; }
+  .cs { color: #fbbf24; }
+  .co { color: #64748b; }
+  .cp { color: #4ade80; }
+  .cn { color: #60a5fa; }
+  .cm { color: #f97316; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--green-faint);
+    border-top: 1px solid #bbf7d0;
+    border-bottom: 1px solid #bbf7d0;
+    padding: 20px 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+    padding: 8px 40px;
+    border-right: 1px solid #bbf7d0;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-size: 28px; font-weight: 800; color: var(--green); display: block; }
+  .stat-lbl { font-size: 12px; color: #166534; letter-spacing: 0.5px; }
+
+  /* ── SECTIONS ── */
+  section { padding: 80px 2rem; }
+  .section-inner { max-width: 860px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--green);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .section-title {
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-body {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 620px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media(max-width:640px){ .about-grid { grid-template-columns: 1fr; } }
+  .about-card {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .about-icon {
+    width: 36px; height: 36px;
+    background: var(--green-light);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .about-card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .about-card p  { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── WEEKS ── */
+  .weeks-section { background: var(--navy); }
+  .weeks-section .section-title { color: var(--white); }
+  .weeks-section .section-body  { color: #94a3b8; }
+  .weeks-section .section-label { color: var(--green-mid); }
+  .weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .week-card {
+    background: #1e293b;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 24px 20px;
+    border-top: 3px solid var(--green);
+  }
+  .week-num {
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--green-mid);
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .week-card h3 { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .week-topics { list-style: none; }
+  .week-topics li {
+    font-size: 12px;
+    color: #94a3b8;
+    padding: 3px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    line-height: 1.5;
+  }
+  .week-topics li::before {
+    content: '';
+    width: 4px; height: 4px;
+    background: var(--green-mid);
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .week-footer {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #334155;
+    font-size: 11px;
+    color: var(--green-mid);
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ── HOW TO READ ── */
+  .steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 19px; top: 24px; bottom: 24px;
+    width: 1px;
+    background: var(--border);
+  }
+  .step { display: flex; gap: 20px; padding: 8px 0 32px; position: relative; }
+  .step:last-child { padding-bottom: 0; }
+  .step-num {
+    width: 38px; height: 38px;
+    background: var(--green);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-content { padding-top: 6px; }
+  .step-content h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .step-content p  { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .step-tag {
+    display: inline-block;
+    background: var(--green-light);
+    color: #166534;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-top: 8px;
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ── WHAT TO EXPECT ── */
+  .expect-section { background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .expect-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .expect-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .expect-card .icon-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .expect-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .expect-card h3 { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .expect-card p  { font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 8px; }
+
+  /* ── DOWNLOAD / BUY ── */
+  .download-section { background: var(--navy); text-align: center; }
+  .download-section .section-title { color: var(--white); margin-bottom: 12px; }
+  .download-section .section-body  { color: #94a3b8; margin: 0 auto 40px; }
+  .download-cards {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .dl-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 28px 32px;
+    min-width: 220px;
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 0.15s, transform 0.1s;
+    display: block;
+  }
+  .dl-card:hover { border-color: var(--green); transform: translateY(-2px); }
+  .dl-card.primary { border-color: var(--green); }
+  .dl-label {
+    font-size: 11px;
+    color: var(--green-mid);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1.5px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .dl-title { font-size: 18px; font-weight: 800; color: var(--white); display: block; margin-bottom: 4px; }
+  .dl-sub   { font-size: 12px; color: #64748b; display: block; margin-bottom: 16px; }
+  .dl-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .dl-btn-green { background: var(--green); color: var(--white); }
+  .dl-btn-outline { border: 1px solid #475569; color: #94a3b8; }
+  .dl-note { font-size: 12px; color: #475569; margin-top: 8px; }
+  .github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 13px;
+    text-decoration: none;
+    border: 1px solid #1e293b;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .github-link:hover { color: var(--white); border-color: #334155; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #020617;
+    padding: 32px 2rem;
+    text-align: center;
+  }
+  .footer-brand {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--green-mid);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .footer-sub { font-size: 12px; color: #334155; }
+  .footer-links { margin-top: 16px; display: flex; gap: 24px; justify-content: center; }
+  .footer-links a { font-size: 12px; color: #475569; text-decoration: none; }
+  .footer-links a:hover { color: #94a3b8; }
+
+  /* ── SVG ICONS ── */
+  .icon { width: 18px; height: 18px; display: block; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">🐍 python in 4 weeks</a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#weeks">the plan</a></li>
+    <li><a href="#how-to-read">how to read</a></li>
+    <li><a href="#download" class="nav-cta">get the book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-dot"></span>
+    Python Mastery Series · Volume 1
+  </div>
+  <h1>Learn <span>Python</span><br>in 4 Weeks</h1>
+  <p class="hero-sub">
+    A structured, day-by-day programme that takes you from complete beginner
+    to confident Python developer — with real exercises and projects every week.
+  </p>
+  <div class="hero-actions">
+    <a href="#download" class="btn-primary">
+      <svg class="icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm-1 11.586L5.707 10.29a1 1 0 111.414-1.414L9 10.757V5a1 1 0 012 0v5.757l1.879-1.88a1 1 0 111.414 1.414L11 13.586a1 1 0 01-1.414 0z"/></svg>
+      Get the book
+    </a>
+    <a href="#weeks" class="btn-secondary">See the 4-week plan →</a>
+  </div>
+
+  <div class="hero-code">
+    <div class="code-bar">
+      <span class="code-dot" style="background:#ef4444"></span>
+      <span class="code-dot" style="background:#f59e0b"></span>
+      <span class="code-dot" style="background:#22c55e"></span>
+      <span class="code-title">your_journey.py</span>
+    </div>
+    <div class="code-body">
+<pre><span class="co"># Day 1 — your very first line of Python</span>
+<span class="ck">print</span>(<span class="cs">"Hello, World!"</span>)  <span class="co"># → Hello, World!</span>
+
+<span class="co"># Day 20 — you built this from scratch</span>
+<span class="ck">class</span> <span class="cn">BankAccount</span>:
+    <span class="ck">def</span> <span class="cm">__init__</span>(<span class="ck">self</span>, owner, balance=<span class="cs">0</span>):
+        <span class="ck">self</span>.owner   = owner
+        <span class="ck">self</span>.balance = balance
+
+    <span class="ck">def</span> <span class="cm">deposit</span>(<span class="ck">self</span>, amount):
+        <span class="ck">self</span>.balance += amount
+        <span class="ck">return</span> <span class="ck">self</span>.balance
+
+account = <span class="cn">BankAccount</span>(<span class="cs">"Alice"</span>, <span class="cs">1000</span>)
+<span class="ck">print</span>(account.deposit(<span class="cs">500</span>))  <span class="co"># → 1500</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num">20</span><span class="stat-lbl">Daily lessons</span></div>
+  <div class="stat"><span class="stat-num">40</span><span class="stat-lbl">Exercises</span></div>
+  <div class="stat"><span class="stat-num">8</span><span class="stat-lbl">Real projects</span></div>
+  <div class="stat"><span class="stat-num">48</span><span class="stat-lbl">Python files</span></div>
+  <div class="stat"><span class="stat-num">0</span><span class="stat-lbl">Prior experience needed</span></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label">// about the book</p>
+    <h2 class="section-title">Why this book is different</h2>
+    <p class="section-body">
+      Most Python books either move too fast and lose beginners, or move too slowly and bore everyone.
+      This one is built around a 20-day structured plan — two hours a day, five days a week —
+      with every concept introduced in plain English before the code ever appears.
+      You will not just read Python. You will write it, break it, fix it, and build real things with it.
+    </p>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="#16a34a"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+        </div>
+        <h3>Day-by-day structure</h3>
+        <p>Every single day is planned for you. No wondering what to study next — just open the book and follow the plan. Each day builds precisely on the last.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="#16a34a"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </div>
+        <h3>Real, runnable code</h3>
+        <p>Every concept ships with working, annotated Python examples you can copy, run, and modify immediately. All 48 source files are available as a free download.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="#16a34a"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/></svg>
+        </div>
+        <h3>40 graded exercises</h3>
+        <p>Ten exercises per week, spanning Easy, Medium, and Challenging difficulty. Every single one comes with a full solution and a line-by-line explanation.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="#16a34a"><path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+        </div>
+        <h3>8 capstone projects</h3>
+        <p>Two projects at the end of every week — real programs you design and build yourself. By week four you will have written a working bank system and student database.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE 4-WEEK PLAN -->
+<section id="weeks" class="weeks-section">
+  <div class="section-inner">
+    <p class="section-label">// the plan</p>
+    <h2 class="section-title">Four weeks. One page at a time.</h2>
+    <p class="section-body">
+      Each week has a clear theme, five daily lessons, ten exercises, and two projects.
+      You always know exactly where you are and what comes next.
+    </p>
+    <div class="weeks-grid">
+      <div class="week-card">
+        <span class="week-num">// WEEK 01</span>
+        <h3>Foundations</h3>
+        <ul class="week-topics">
+          <li>Installing Python &amp; VS Code</li>
+          <li>Variables &amp; data types</li>
+          <li>Strings &amp; f-strings</li>
+          <li>Numbers &amp; arithmetic</li>
+          <li>Conditionals (if / elif / else)</li>
+        </ul>
+        <div class="week-footer">Days 1–5 · 10 exercises · 2 projects</div>
+      </div>
+      <div class="week-card">
+        <span class="week-num">// WEEK 02</span>
+        <h3>Collections &amp; Loops</h3>
+        <ul class="week-topics">
+          <li>Lists, slicing &amp; methods</li>
+          <li>Tuples &amp; dictionaries</li>
+          <li>Sets &amp; set algebra</li>
+          <li>For &amp; while loops</li>
+          <li>List comprehensions</li>
+        </ul>
+        <div class="week-footer">Days 6–10 · 10 exercises · 2 projects</div>
+      </div>
+      <div class="week-card">
+        <span class="week-num">// WEEK 03</span>
+        <h3>Functions &amp; Files</h3>
+        <ul class="week-topics">
+          <li>Defining &amp; calling functions</li>
+          <li>Scope, closures &amp; recursion</li>
+          <li>File I/O (read / write / append)</li>
+          <li>CSV files &amp; data pipelines</li>
+          <li>Error handling (try / except)</li>
+        </ul>
+        <div class="week-footer">Days 11–15 · 10 exercises · 2 projects</div>
+      </div>
+      <div class="week-card">
+        <span class="week-num">// WEEK 04</span>
+        <h3>Modules &amp; OOP</h3>
+        <ul class="week-topics">
+          <li>math, random, os, datetime</li>
+          <li>Classes &amp; objects</li>
+          <li>Properties &amp; methods</li>
+          <li>pip &amp; virtual environments</li>
+          <li>Final capstone projects</li>
+        </ul>
+        <div class="week-footer">Days 16–20 · 10 exercises · 2 projects</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT TO EXPECT -->
+<section id="expect" class="expect-section">
+  <div class="section-inner">
+    <p class="section-label">// what to expect</p>
+    <h2 class="section-title">Honest expectations, real results</h2>
+    <p class="section-body">
+      This book does not promise miracles. It promises a clear path — and everything you need to walk it.
+      Here is exactly what you will find inside and what you will be able to do by day 20.
+    </p>
+    <div class="expect-grid">
+      <div class="expect-card">
+        <div class="icon-row">
+          <div class="expect-icon">📖</div>
+          <h3>Deep-dive explanations</h3>
+        </div>
+        <p>Every concept is explained twice — first in plain English, then in code. Memory diagrams, flow charts, and comparison tables make abstract ideas concrete and sticky.</p>
+      </div>
+      <div class="expect-card">
+        <div class="icon-row">
+          <div class="expect-icon">⚡</div>
+          <h3>~2 hours per day</h3>
+        </div>
+        <p>The daily lessons are sized for a two-hour session. You will read the concept, study the examples, run the code, and attempt at least two exercises before stopping.</p>
+      </div>
+      <div class="expect-card">
+        <div class="icon-row">
+          <div class="expect-icon">🧱</div>
+          <h3>Progressive difficulty</h3>
+        </div>
+        <p>Nothing is introduced before you need it. Every new idea connects directly to something you already know. There are no mysterious leaps, no assumed knowledge.</p>
+      </div>
+      <div class="expect-card">
+        <div class="icon-row">
+          <div class="expect-icon">🏗️</div>
+          <h3>Build real things</h3>
+        </div>
+        <p>Week 1 ends with a bank account checker. Week 2 ends with a supermarket checkout system. Week 4 ends with a full OOP student management database. Real software.</p>
+      </div>
+      <div class="expect-card">
+        <div class="icon-row">
+          <div class="expect-icon">✅</div>
+          <h3>Solutions with explanations</h3>
+        </div>
+        <p>Every exercise and every project comes with a complete, annotated solution. Not just the answer — a full walkthrough of why each decision was made.</p>
+      </div>
+      <div class="expect-card">
+        <div class="icon-row">
+          <div class="expect-icon">🚀</div>
+          <h3>Ready for what's next</h3>
+        </div>
+        <p>After day 20 you will be ready for intermediate Python — generators, decorators, async, testing — or for frameworks like FastAPI, Django, or data science with pandas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO READ -->
+<section id="how-to-read">
+  <div class="section-inner">
+    <p class="section-label">// how to read it</p>
+    <h2 class="section-title">A reading approach that actually works</h2>
+    <p class="section-body">
+      Most people read programming books passively and retain very little. This is the approach that works — active, daily, code-first.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Read the day's section the evening before</h3>
+          <p>Each daily lesson is designed to be read in 30–40 minutes. Read it the evening before you intend to practise — your brain processes new information overnight. You will sit down the next morning already familiar with the concepts.</p>
+          <span class="step-tag">evening read · 30–40 min</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Type every code example — do not copy-paste</h3>
+          <p>Typing code by hand, even code you are copying from the book, builds muscle memory and forces you to notice every character. When you make a typo and the program fails, you learn more from fixing it than from reading ten more pages.</p>
+          <span class="step-tag">type, run, observe · ~45 min</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Attempt the exercises before looking at the solutions</h3>
+          <p>Give yourself a genuine attempt at each exercise — even if you get it wrong. The struggle is where the learning happens. Only check the solution after you have a working attempt, or after 20 minutes of genuine effort.</p>
+          <span class="step-tag">exercises · ~30–40 min</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Build the weekly project without looking at the solution first</h3>
+          <p>The two weekly projects are your checkpoint — they test whether you have truly understood the week's material. Start the project, design your approach, write your code. Only consult the solution when you are stuck, or to compare approaches once finished.</p>
+          <span class="step-tag">end of week · 2–3 hrs</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h3>Keep all your code in one folder</h3>
+          <p>Create a folder called <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:13px;color:#0f172a">python_learning/</code> on your desktop before Day 1. Save every file you write inside it. By Day 20 you will have a portfolio of working programs you built yourself — proof that you can code.</p>
+          <span class="step-tag">every day · ongoing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD / BUY -->
+<section id="download" class="download-section">
+  <div class="section-inner">
+    <p class="section-label" style="color:var(--green-mid)">// get the book</p>
+    <h2 class="section-title">Start learning today</h2>
+    <p class="section-body">
+      The book, the complete exercise code repository (48 Python files), and all solutions
+      are available together. No account needed to download the code — it is free and always will be.
+    </p>
+
+    <div class="download-cards">
+      <a href="#" class="dl-card primary" onclick="return false;">
+        <span class="dl-label">// digital edition</span>
+        <span class="dl-title">Buy the eBook</span>
+        <span class="dl-sub">PDF · ePub · coming soon</span>
+        <span class="dl-btn dl-btn-green">Pre-order →</span>
+        <p class="dl-note">Link will be updated on publication</p>
+      </a>
+      <a href="#" class="dl-card" onclick="return false;">
+        <span class="dl-label">// print edition</span>
+        <span class="dl-title">Buy in Print</span>
+        <span class="dl-sub">Paperback · 6×9 in · coming soon</span>
+        <span class="dl-btn dl-btn-outline">Coming soon</span>
+        <p class="dl-note">Available at major retailers</p>
+      </a>
+      <a href="#" class="dl-card" onclick="return false;">
+        <span class="dl-label">// free download</span>
+        <span class="dl-title">Get the Code</span>
+        <span class="dl-sub">48 .py files · all solutions · ZIP</span>
+        <span class="dl-btn dl-btn-green">Download free →</span>
+        <p class="dl-note">GitHub · no account needed</p>
+      </a>
+    </div>
+
+    <a href="#" class="github-link" onclick="return false;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#64748b"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.929.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      View source code on GitHub (link coming on publication)
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">🐍 python in 4 weeks</span>
+  <p class="footer-sub">Python Mastery Series · Volume 1 · First Edition · © 2025</p>
+  <div class="footer-links">
+    <a href="#about">about</a>
+    <a href="#weeks">the plan</a>
+    <a href="#how-to-read">how to read</a>
+    <a href="#download">get the book</a>
+  </div>
+</footer>
+
+</body>
+</html>
